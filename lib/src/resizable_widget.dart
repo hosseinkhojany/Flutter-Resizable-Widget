@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:resizable_widget/src/model/common_sizes.dart';
-import 'package:resizable_widget/src/model/trigger.dart';
 import '../resizable_widget.dart';
-import 'resizable_widget_controller.dart';
 
 class ResizableWidget extends StatefulWidget {
   ResizableWidget({
@@ -32,6 +30,9 @@ class ResizableWidget extends StatefulWidget {
       minWidth: minWidth,
       initialPosition: initialPosition,
     );
+    for (var i = 0; i < triggersList.length; i++) {
+      triggersList[i].alignment = DragTriggersEnum.values[i].alignment;
+    }
   }
 
   late final CommonSizes size;
@@ -51,7 +52,8 @@ class _ResizableWidgetState extends State<ResizableWidget> {
   @override
   void initState() {
     controller = widget.controller ?? ResizableWidgetController();
-    controller.init(finalSize: widget.size, showDragWidgets: widget.showDragWidgets);
+    controller.init(
+        finalSize: widget.size, showDragWidgets: widget.showDragWidgets);
     super.initState();
   }
 
@@ -84,7 +86,10 @@ class _ResizableWidgetState extends State<ResizableWidget> {
                 visible: controller.showDragWidgets,
                 child: Stack(
                   children: widget.triggersList.map((trigger) {
-                    return TriggerWidget(onDrag: trigger.onDragType.getOnDragFunction(controller), trigger: trigger);
+                    return TriggerWidget(
+                        onDrag:
+                            trigger.onDragType.getOnDragFunction(controller),
+                        trigger: trigger);
                   }).toList(),
                 ),
               ),
